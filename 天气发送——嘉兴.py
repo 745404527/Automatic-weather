@@ -6,10 +6,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-print("ÕıÔÚ·¢ËÍ¼ÎĞËÌìÆø")
+print("æ­£åœ¨å‘é€å˜‰å…´å¤©æ°”")
 
-url = r'https://free-api.heweather.net/s6/weather/forecast?location=¼ÎĞË&key=3a5c6118fc7143a5a1ea56f01f950bdc'
-# »ñÈ¡µ±ÈÕÊ±¼ä	2020-3-5
+url = r'https://free-api.heweather.net/s6/weather/forecast?location=å˜‰å…´&key=3a5c6118fc7143a5a1ea56f01f950bdc'
+# è·å–å½“æ—¥æ—¶é—´	2020-3-5
 today_time = time.strftime('%Y-%m-%d', time.localtime(time.time()))
 
 def get_weather_data():
@@ -18,7 +18,7 @@ def get_weather_data():
     result = res['HeWeather6'][0]['daily_forecast']
     location = res['HeWeather6'][0]['basic']
     city = location['parent_city'] + location['location']
-    names = ['³ÇÊĞ', 'Ê±¼ä', 'ÌìÆø×´¿ö', '×î¸ßÎÂ', '×îµÍÎÂ', 'ÈÕ³ö', 'ÈÕÂä']
+    names = ['åŸå¸‚', 'æ—¶é—´', 'å¤©æ°”çŠ¶å†µ', 'æœ€é«˜æ¸©', 'æœ€ä½æ¸©', 'æ—¥å‡º', 'æ—¥è½']
     with open('today_weather.csv', 'w', newline='')as f:
         writer = csv.writer(f)
         writer.writerow(names)
@@ -33,43 +33,43 @@ def get_weather_data():
     send_email()
 
 def send_email():
-    # ÉèÖÃÓÊÏäµÄÓòÃû
+    # è®¾ç½®é‚®ç®±çš„åŸŸå
     HOST = 'smtp.qq.com'
-    # ÉèÖÃÓÊ¼ş±êÌâ
-    SUBJECT = '%sÈÕ·İÌìÆøÔ¤±¨ĞÅÏ¢£¬Çë²éÊÕ'%today_time
-    # ÉèÖÃ·¢¼şÈËÓÊÏä
+    # è®¾ç½®é‚®ä»¶æ ‡é¢˜
+    SUBJECT = '%sæ—¥ä»½å¤©æ°”é¢„æŠ¥ä¿¡æ¯ï¼Œè¯·æŸ¥æ”¶'%today_time
+    # è®¾ç½®å‘ä»¶äººé‚®ç®±
     FROM = 'xxx@xxx.com'
-    # ÉèÖÃÊÕ¼şÈËÓÊÏä
-    TO = 'xxx@xxx.com'		# ¿ÉÒÔÍ¬Ê±·¢ËÍµ½¶à¸öÓÊÏä,¶ººÅ¸ô¿ª
+    # è®¾ç½®æ”¶ä»¶äººé‚®ç®±
+    TO = 'xxx@xxx.com'		# å¯ä»¥åŒæ—¶å‘é€åˆ°å¤šä¸ªé‚®ç®±,é€—å·éš”å¼€
     message = MIMEMultipart('related')
-    # --------------------------------------·¢ËÍÎÄ±¾-----------------
-	# ·¢ËÍÓÊ¼şÕıÎÄµ½¶Ô·½µÄÓÊÏäÖĞ
-    message_html = MIMEText("%sÈÕ·İÌìÆøÔ¤±¨µ½ÁË£¬Çë²éÊÕ" % today_time, 'plain', 'utf-8')
+    # --------------------------------------å‘é€æ–‡æœ¬-----------------
+	# å‘é€é‚®ä»¶æ­£æ–‡åˆ°å¯¹æ–¹çš„é‚®ç®±ä¸­
+    message_html = MIMEText("%sæ—¥ä»½å¤©æ°”é¢„æŠ¥åˆ°äº†ï¼Œè¯·æŸ¥æ”¶" % today_time, 'plain', 'utf-8')
     message.attach(message_html)
 
-    # -------------------------------------Ìí¼ÓÎÄ¼ş---------------------
-    # today_weather.csvÕâ¸öÎÄ¼ş
+    # -------------------------------------æ·»åŠ æ–‡ä»¶---------------------
+    # today_weather.csvè¿™ä¸ªæ–‡ä»¶
     message_xlsx = MIMEText(open('today_weather.csv', 'rb').read(), 'base64', 'utf-8')
-    # ÉèÖÃÎÄ¼şÔÚ¸½¼şµ±ÖĞµÄÃû×Ö
+    # è®¾ç½®æ–‡ä»¶åœ¨é™„ä»¶å½“ä¸­çš„åå­—
     message_xlsx['Content-Disposition'] = 'attachment;filename="today_weather.csv"'
     message.attach(message_xlsx)
 
-    # ÉèÖÃÓÊ¼ş·¢¼şÈË
-    message['From'] = "ÌìÆøĞ¡ÖúÊÖ"
-    # ÉèÖÃÓÊ¼şÊÕ¼şÈË
+    # è®¾ç½®é‚®ä»¶å‘ä»¶äºº
+    message['From'] = "å¤©æ°”å°åŠ©æ‰‹"
+    # è®¾ç½®é‚®ä»¶æ”¶ä»¶äºº
     message['To'] = "xxx@xxx.com"
-    # ÉèÖÃÓÊ¼ş±êÌâ
+    # è®¾ç½®é‚®ä»¶æ ‡é¢˜
     message['Subject'] = SUBJECT
 
-    # »ñÈ¡¼òµ¥ÓÊ¼ş´«ÊäĞ­ÒéµÄÖ¤Êé
+    # è·å–ç®€å•é‚®ä»¶ä¼ è¾“åè®®çš„è¯ä¹¦
     email_client = smtplib.SMTP_SSL(host='smtp.qq.com')
-    # ÉèÖÃ·¢¼şÈËÓÊÏäµÄÓòÃûºÍ¶Ë¿Ú£¬¶Ë¿ÚÎª465
+    # è®¾ç½®å‘ä»¶äººé‚®ç®±çš„åŸŸåå’Œç«¯å£ï¼Œç«¯å£ä¸º465
     email_client.connect(HOST, '465')
-    # ---------------------------ÓÊÏäÊÚÈ¨Âë------------------------------
-    result = email_client.login(FROM, 'fsqjuzbpmmmxbdaj')
-    print('µÇÂ¼½á¹û', result)
+    # ---------------------------é‚®ç®±æˆæƒç ------------------------------
+    result = email_client.login(FROM, 'xxxxx')
+    print('ç™»å½•ç»“æœ', result)
     email_client.sendmail(from_addr=FROM, to_addrs=TO.split(','), msg=message.as_string())
-    # ¹Ø±ÕÓÊ¼ş·¢ËÍ¿Í»§¶Ë
+    # å…³é—­é‚®ä»¶å‘é€å®¢æˆ·ç«¯
     email_client.close()
 
 get_weather_data()
