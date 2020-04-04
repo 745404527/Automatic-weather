@@ -66,7 +66,7 @@ def send_email():
     # 设置发件人邮箱的域名和端口，端口为465
     email_client.connect(HOST, '465')
     # ---------------------------邮箱授权码------------------------------
-    result = email_client.login(FROM, 'fsqjuzbpmmmxbdaj')
+    result = email_client.login(FROM, 'xxxxx')
     print('登录结果', result)
     email_client.sendmail(from_addr=FROM, to_addrs=TO.split(','), msg=message.as_string())
     # 关闭邮件发送客户端
